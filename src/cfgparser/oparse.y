@@ -421,6 +421,7 @@ ifstmts:   | ifstmts ifstmt
 ifstmt:      vcomment
              | iifweight
              | isetifmode
+             | isetifisolated
              | TOK_IP4BROADCAST isetipv4mc
              | TOK_IPV4BROADCAST isetipv4mc
              | TOK_IPV4MULTICAST isetipv4mc
@@ -437,7 +438,6 @@ ifstmt:      vcomment
              | isethnaval
              | isetautodetchg
              | isetlqmult
-             | issetisolated
 ;
 
 plbody:     TOK_OPEN plstmts TOK_CLOSE
@@ -595,7 +595,7 @@ isetifmode: TOK_IFMODE TOK_STRING
 }
 ;
 
-issetisolated: TOK_IFISOLATED TOK_STRING
+isetifisolated: TOK_IFISOLATED TOK_STRING
 {
   int ifcnt = ifs_in_curr_cfg;
   struct olsr_if *ifs = olsr_cnf->interfaces;

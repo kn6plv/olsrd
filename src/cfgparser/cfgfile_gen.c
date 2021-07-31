@@ -159,6 +159,7 @@ static void olsrd_write_if_autobuf(struct autobuf *out, struct olsrd_config *cnf
       cnfi->mode == DEF_IF_MODE ? "# " : "",
       OLSR_IF_MODE[cnfi->mode]);
   if (comments) abuf_puts(out,
+    "\n"
     "    # Isolate this interface to prevent neighbor nodes attached here from\n"
     "    # seeing neighbors attached to other interfaces\n"
     "\n");

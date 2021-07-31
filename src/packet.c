@@ -341,6 +341,7 @@ olsr_build_tc_packet(struct tc_message *message, struct interface_olsr *outif)
       continue;
     }
 
+    /* Don't include neighbors on other interfaces if this interface is isolated */
     lnk = get_best_link_to_neighbor(&entry->neighbor_main_addr);
     if (!lnk || (outif->olsr_if->cnf->is_isolated && outif != lnk->inter)) {
       continue;

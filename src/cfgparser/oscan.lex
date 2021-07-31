@@ -59,7 +59,7 @@
 #include "olsrd_conf_checksum.h"
 
 #include "oparse.h"
- 
+
 #define ECHO if(fwrite( yytext, yyleng, 1, yyout )) {}
 
 /* Prototypes */
@@ -660,13 +660,13 @@ IPV6ADDR {IPV6PAT1}|{IPV6PAT2}|{IPV6PAT3}|{IPV6PAT4}|{IPV6PAT5}|{IPV6PAT6}|{IPV6
     yylval = NULL;
     return TOK_SMART_GW_UPLINK;
 }
- 
+
 "SmartGatewayUplinkNAT" {
     olsrd_config_checksum_add(yytext, yyleng);
     yylval = NULL;
     return TOK_SMART_GW_UPLINK_NAT;
 }
- 
+
 "SmartGatewaySpeed" {
     olsrd_config_checksum_add(yytext, yyleng);
     yylval = NULL;
@@ -718,6 +718,11 @@ IPV6ADDR {IPV6PAT1}|{IPV6PAT2}|{IPV6PAT3}|{IPV6PAT4}|{IPV6PAT5}|{IPV6PAT6}|{IPV6
     olsrd_config_checksum_add(yytext, yyleng);
     yylval = NULL;
     return TOK_IFMODE;
+}
+"Isolated" {
+    olsrd_config_checksum_add(yytext, yyleng);
+    yylval = NULL;
+    return TOK_IFISOLATED;
 }
 "IPv6Multicast" {
     olsrd_config_checksum_add(yytext, yyleng);

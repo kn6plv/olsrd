@@ -623,13 +623,8 @@ olsr_namesvc_gen(void *foo __attribute__ ((unused)))
     }
   }
 
-  /* Calculate maxmimum packet size */
-  int maxsize = sizeof(buffer);
-  for (ifn = ifnet; ifn; ifn = ifn->int_next) {
-    if (ifn->netbuf.maxsize < maxsize) {
-      maxsize = ifn->netbuf.maxsize;
-    }
-  }
+  /* Limit maxmimum packet size */
+  int maxsize = 100;
 
   /* Encapsulate name messages into a set of packets (keeping track of our position with a cursor)
      While name messages can be large, the mtu limits how many we can send at a time. */

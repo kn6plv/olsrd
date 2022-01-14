@@ -624,7 +624,7 @@ olsr_namesvc_gen(void *foo __attribute__ ((unused)))
   }
 
   /* Limit maxmimum packet size */
-  int maxsize = 100;
+  int maxsize = 150;
 
   /* Encapsulate name messages into a set of packets (keeping track of our position with a cursor)
      While name messages can be large, the mtu limits how many we can send at a time. */

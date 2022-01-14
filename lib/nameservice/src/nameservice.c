@@ -766,7 +766,7 @@ encap_namemsg(struct namemsg *msg, int maxsize, int* cursor)
   for (my_name = my_names; my_name != NULL; my_name = my_name->next) {
     if (i >= *cursor) {
       npos = create_packet((struct name *)ARM_NOWARN_ALIGN(pos), my_name);
-      if (npos - pos > maxsize) {
+      if (npos - (char *)msg > maxsize) {
         msg->nr_names = htons(i - *cursor);
         *cursor = i;
         return pos - (char *)msg;     //length
@@ -779,7 +779,7 @@ encap_namemsg(struct namemsg *msg, int maxsize, int* cursor)
   for (my_name = my_forwarders; my_name != NULL; my_name = my_name->next) {
     if (i >= *cursor) {
       npos = create_packet((struct name *)ARM_NOWARN_ALIGN(pos), my_name);
-      if (npos - pos > maxsize) {
+      if (npos - (char *)msg > maxsize) {
         msg->nr_names = htons(i - *cursor);
         *cursor = i;
         return pos - (char *)msg;     //length
@@ -792,7 +792,7 @@ encap_namemsg(struct namemsg *msg, int maxsize, int* cursor)
   for (my_name = my_services; my_name != NULL; my_name = my_name->next) {
     if (i >= *cursor) {
       npos = create_packet((struct name *)ARM_NOWARN_ALIGN(pos), my_name);
-      if (npos - pos > maxsize) {
+      if (npos - (char *)msg > maxsize) {
         msg->nr_names = htons(i - *cursor);
         *cursor = i;
         return pos - (char *)msg;     //length
@@ -805,7 +805,7 @@ encap_namemsg(struct namemsg *msg, int maxsize, int* cursor)
   for (my_name = my_macs; my_name != NULL; my_name = my_name->next) {
     if (i >= *cursor) {
       npos = create_packet((struct name *)ARM_NOWARN_ALIGN(pos), my_name);
-      if (npos - pos > maxsize) {
+      if (npos - (char *)msg > maxsize) {
         msg->nr_names = htons(i - *cursor);
         *cursor = i;
         return pos - (char *)msg;     //length
@@ -834,7 +834,7 @@ encap_namemsg(struct namemsg *msg, int maxsize, int* cursor)
     e.name = s;
     lookup_defhna_latlon(&e.ip);
     npos = create_packet((struct name *)ARM_NOWARN_ALIGN(pos), &e);
-    if (npos - pos > maxsize) {
+    if (npos - (char *)msg > maxsize) {
       msg->nr_names = htons(i - *cursor);
       *cursor = i;
       return pos - (char *)msg;     //length

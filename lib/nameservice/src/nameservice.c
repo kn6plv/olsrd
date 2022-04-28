@@ -1517,7 +1517,7 @@ free_old_list_entries(struct list_node *list)
       tmp = &list2db(list_node)->names;
       while (*tmp != NULL) {
         maybe_delete = *tmp;
-        if (olsr_isTimedOut(maybe_delete->expires)) {
+        if (maybe_delete->expires != 0 && olsr_isTimedOut(maybe_delete->expires)) {
           *tmp = (*tmp)->next;
           free(maybe_delete->name);
           free(maybe_delete);

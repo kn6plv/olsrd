@@ -100,6 +100,7 @@ struct name_entry {
   uint16_t type;
   uint16_t len;
   char *name;
+  uint32_t expires;
   struct name_entry *next;             /* linked list */
 };
 
@@ -194,6 +195,8 @@ void name_constructor(void);
 void name_destructor(void);
 
 int name_init(void);
+
+void free_old_list_entries(struct list_node *list);
 
 #endif /* _NAMESERVICE_PLUGIN */
 

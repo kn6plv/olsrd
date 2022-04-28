@@ -925,7 +925,7 @@ decap_namemsg(struct name *from_packet, struct name_entry **to, bool * this_tabl
        already_saved_name_entries = already_saved_name_entries->next) {
     if (type_of_from_packet == NAME_HOST
         && strncmp(already_saved_name_entries->name, name, len_of_name) == 0) {
-      already_saved_name_entries->expires = olsr_getTimestamp(NAME_VALID_TIME);
+      already_saved_name_entries->expires = olsr_getTimestamp(ENTRY_VALID_TIME);
       if (ipequal(&already_saved_name_entries->ip, &from_packet->ip)) {
         OLSR_PRINTF(4, "NAME PLUGIN: received name entry %s (%s) already in hash table\n", name,
                 olsr_ip_to_string(&strbuf, &already_saved_name_entries->ip));
@@ -943,18 +943,18 @@ decap_namemsg(struct name *from_packet, struct name_entry **to, bool * this_tabl
 
     } else if (type_of_from_packet == NAME_SERVICE
         && strncmp(already_saved_name_entries->name, name, len_of_name) == 0) {
-      already_saved_name_entries->expires = olsr_getTimestamp(NAME_VALID_TIME);
+      already_saved_name_entries->expires = olsr_getTimestamp(ENTRY_VALID_TIME);
       OLSR_PRINTF(4, "NAME PLUGIN: received name or service entry %s (%s) already in hash table\n", name,
                   olsr_ip_to_string(&strbuf, &already_saved_name_entries->ip));
       return;
 
     } else if (type_of_from_packet == NAME_FORWARDER && ipequal(&already_saved_name_entries->ip, &from_packet->ip)) {
-      already_saved_name_entries->expires = olsr_getTimestamp(NAME_VALID_TIME);
+      already_saved_name_entries->expires = olsr_getTimestamp(ENTRY_VALID_TIME);
       OLSR_PRINTF(4, "NAME PLUGIN: received forwarder entry %s (%s) already in hash table\n", name,
                   olsr_ip_to_string(&strbuf, &already_saved_name_entries->ip));
       return;
     } else if (type_of_from_packet == NAME_LATLON) {
-      already_saved_name_entries->expires = olsr_getTimestamp(NAME_VALID_TIME);
+      already_saved_name_entries->expires = olsr_getTimestamp(ENTRY_VALID_TIME);
       if (0 != strncmp(already_saved_name_entries->name, name, len_of_name)) {
         OLSR_PRINTF(4, "NAME PLUGIN: updating name %s -> %s (%s)\n", already_saved_name_entries->name, name,
                     olsr_ip_to_string(&strbuf, &already_saved_name_entries->ip));
@@ -988,7 +988,7 @@ decap_namemsg(struct name *from_packet, struct name_entry **to, bool * this_tabl
   tmp->len = ntohs(from_packet->len);
   tmp->name = olsr_malloc(tmp->len + 1, "new name_entry name");
   tmp->ip = from_packet->ip;
-  tmp->expires = olsr_getTimestamp(NAME_VALID_TIME);
+  tmp->expires = olsr_getTimestamp(ENTRY_VALID_TIME);
   strscpy(tmp->name, name, tmp->len + 1);
 
   OLSR_PRINTF(3, "\nNAME PLUGIN: create new name/service/forwarder entry %s (%s) [len=%d] [type=%d] in linked list\n", tmp->name,
@@ -1508,12 +1508,13 @@ void
 free_old_list_entries(struct list_node *list)
 {
   int i;
-  struct list_node *list_node;
+  struct list_node *list_node, *list_head;
   struct name_entry *maybe_delete;
   struct name_entry **tmp;
 
   for (i = 0; i < HASHSIZE; i++) {
-    for (list_node = &list[i]; list_node  != NULL; list_node = list_node->next) {
+    list_head = &list[i];
+    for (list_node = list_head->next; list_node != list_head; list_node = list_node->next) {
       tmp = &list2db(list_node)->names;
       while (*tmp != NULL) {
         maybe_delete = *tmp;

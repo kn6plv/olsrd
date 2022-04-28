@@ -77,6 +77,7 @@
 #define EMISSION_JITTER         25      /* percent */
 #define NAME_VALID_TIME		1800    /* seconds */
 #define NAMESERVER_COUNT        3
+#define ENTRY_VALID_TIME  (NAME_VALID_TIME * 1000) /* milliseconds */
 
 #define NAME_PROTOCOL_VERSION	1
 
